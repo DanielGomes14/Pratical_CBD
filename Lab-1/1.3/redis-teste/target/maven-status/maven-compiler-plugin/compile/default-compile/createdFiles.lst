@@ -1,0 +1,4 @@
+redis/Forum.class
+redis/SimplePostList.class
+redis/SimplePost.class
+redis/SimplePostHash.class

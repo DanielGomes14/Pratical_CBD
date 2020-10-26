@@ -1,0 +1,124 @@
+SET testkey hello
+EXISTS testkey
+TYPE testkey
+KEYS *
+DEL testkey
+EXISTS testkey
+TYPE testkey
+SCAN 0
+SCAN 0 MATCH "hell*"
+SET Book:1 "Infinite Jest"
+GET Book:1
+SET Book:1:ReadAction 1
+GET Book:1:ReadAction
+INCR Book:1:ReadAction
+GET Book:1:ReadAction
+INCRBY Book:1:ReadAction 20
+GET Book:1:ReadAction
+DECR Book:1:ReadAction
+GET Book:1:ReadAction
+GET Book:1:ReadAction
+MSET Person:2 "Kurt Vonnegut" Person:3 "Jane Austen" Person:4 "Mark Twain"
+MGET Person:2 Person:3 Person:4
+LPUSH Book:1:comment "This was a fun read"
+LRANGE Book:1:comment 0 -1
+LRANGE Book:1:comment 0 1
+LRANGE Book:1:comment 0 1000
+LPUSH Book:2:comment "Way too long!"
+LRANGE Book:2:comment 0 -1
+LPUSH Book:1:comment "Way too long!"
+LRANGE Book:1:comment 0 1000
+LRANGE Book:1:comment 0 -1
+LRANGE Book:1:comment 0
+LRANGE Book:1:comment -1 0
+LRANGE Book:1:comment 0 1
+LRANGE Book:1:comment 0 0
+LRANGE Book:1:comment -1 0
+LRANGE Book:1:comment -1 1
+LPOP Book:1:comment
+LRANGE Book
+LRANGE Book:1
+LRANGE Book:1:comment 0 -1
+LPUSH Book:1:comment "This was a fun read"
+RPUSH Book:1:comment "Tennis anyone?"
+RPUSH Organization:1:members Person:1 Person:2 Person:3 Person:4
+LRANGE Organization:1:members 0 -1
+LTRIM Organization:1:members 0 2
+LRANGE Organization:1:members 0 -1
+BRPOP Organization:1:members 5
+LRANGE Organization:1:members 0 -1
+help
+LRANGE Organization:3
+LRANGE Organization 0 -1
+LRANGE Organization:1:members  0 -1
+LRANGE Organization:2:members  0 -1
+HSET Book:3 name "Cats Cradle"
+HGET Book:3 name
+HMSET Book:4 name "Slaughterhouse-Five" author "Kurt Vonnegut" copyrightYear 1969 ISBN 29960763
+HMGET Book:4 author ISBN
+HGETALL Book:4
+HGETALL Book:1
+HGETALL Book:2
+HGETALL Book:3
+HEXISTS Book:4 copyrightYear
+HEXISTS Book:4 barcode
+HLEN Book:4
+HKEYS Book:4
+HVALS Book:4
+HDEL Book:4 copyrightYear
+HGETALL Book:4
+HSET Book:4 copyrightYear 1968
+HGET Book:4 copyrightYear
+HINCRBY Book:4 copyrightYear 1
+HINCRBY Book:4 ISBN 1
+HINCRBY Book:4 author 1
+SET Organization:5 "Beatles"
+SADD Organization:5:member Paul John George Ringo
+
+SMEMBERS Organization:5:member
+SISMEMBER Organization:5:member "Ralph"
+SET Organization:6 "Wings">
+SET Organization:6 "Wings"
+SET Organization:7 "Traveling Wilburys"
+SADD Organization:6:member Paul Linda Denny
+SADD Organization:7:member Bob George Jeff Roy Tom
+SUNION Organization:5:member Organization:6:member
+SUNION Organization:6:member Organization:7:member
+ SUNION Organization:5:member Organization:6:member Organization:8
+SADD Organization:7:member Bob George Jeff Roy Tom
+ SUNION Organization:5:member Organization:6:member Organization:8
+SUNION Organization:6:member Organization:7:member
+ SUNION Organization:5:member Organization:6:member Organization:8
+SINTER Organization:5:member Organization:6:member
+SINTER Organization:5:member Organization:7:member
+SINTER Organization:6:member Organization:7:member
+SDIFF Organization:5:member Organization:6:member
+SDIFF Organization:6:member Organization:5:member
+ZADD copyrightYear 1996 Book:1 2014 Book:2 1963 Book:3
+ZADD copyrightYear 1969 Book:4
+ZRANGE copyrightYear 0 -1
+ZRANGE copyrightYear 0 -1 WITHSCORES
+ZREVRANGE copyrightYear 0 -1
+ZREVRANGE copyrightYear 0 -1 WITHSCORES
+ZADD Book:names 0 "Into the Wild" 0 "Cat's Cradle" 
+ZADD Book:names0 "Time Machine, The" 0 "Gravity's Rainbow"
+ZADD Book:names 0 "Time Machine, The" 0 "Gravity's Rainbow"
+ZRANGE Book:names 0 -1 WITHSCORES
+ZRANK copyrightYear Book:3
+ ZSCORE copyrightYear Book:3
+ZCOUNT copyrightYear 1900 1970
+ZRANGEBYSCORE copyrightYear 1998 +inf WITHSCORES
+HSET Movie:345 name "Saving Mr. Banks"
+SET Movie:345:Likes 200
+MULTI
+HSET Movie:345 copyrightYear 2013
+INCR Movie:345:Likes
+EXEC
+MULTI
+HSET Movie:345 copyrightYear 2013
+DISCARD
+EXEC
+WATCH Movie:345:Likes
+MULTI
+INCR Movie:345:Likes
+exec
