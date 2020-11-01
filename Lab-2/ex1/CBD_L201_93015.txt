@@ -1,0 +1,25 @@
+mongo --eval 'db.runCommand({ connectionStatus: 1 })'
+--eval 'db.runCommand({ connectionStatus: 1 })'
+use test
+show collections
+db.users.insert({ _id : ObjectId("507f191e810c19729de860ea"), title: "MongoDB Overview", description: "MongoDB is no sql database", by: "tutorials point", url: "http://www.tutorialspoint.com", tags: ['mongodb', 'database', 'NoSQL'],  likes: 100 })
+show collections
+db.createCollection("post")
+db.post.insert([ { title: "MongoDB Overview", description: "MongoDB is no SQL database", by: "tutorials point", url: "http://www.tutorialspoint.com", tags: ["mongodb", "database", "NoSQL"], likes: 100, }, { title: "NoSQL Database", description: "NoSQL database doesn't have tables", by: "tutorials point", url: "http://www.tutorialspoint.com", tags: ["mongodb", "database", "NoSQL"], likes: 20, comments: [ { user:"user1", message: "My first comment", dateCreated: new Date(2013,11,10,2,35), like: 0 } ] } ])
+db.createCollection("empDetails")
+db.mycol.insert( { title: "MongoDB Overview", description: "MongoDB is no SQL database", by: "tutorials point", url: "http://www.tutorialspoint.com", tags: ["mongodb", "database", "NoSQL"], likes: 100 }, { title: "NoSQL Database", description: "NoSQL database doesn't have tables", by: "tutorials point", url: "http://www.tutorialspoint.com", tags: ["mongodb", "database", "NoSQL"], likes: 20, comments: [ { user:"user1", message: "My first comment", dateCreated: new Date(2013,11,10,2,35), like: 0 } ] } ])
+db.mycol.insert([ { title: "MongoDB Overview", description: "MongoDB is no SQL database", by: "tutorials point", url: "http://www.tutorialspoint.com", tags: ["mongodb", "database", "NoSQL"], likes: 100 }, { title: "NoSQL Database", description: "NoSQL database doesn't have tables", by: "tutorials point", url: "http://www.tutorialspoint.com", tags: ["mongodb", "database", "NoSQL"], likes: 20, comments: [ { user:"user1", message: "My first comment", dateCreated: new Date(2013,11,10,2,35), like: 0 } ] } ])
+db.mycol.find({},{"title":1,_id:0})
+db.mycol.find({},{"title":1,_id:0}).limit(1)
+db.mycol.find({},{"title":1,_id:0}).limit(2)
+db.mycol.insert({ _id: ObjectId(7df78ad8902d)    title: 'NoSQL Overview',     description: 'No sql database is very fast',    by_user: 'tutorials point',    url: 'http://www.tutorialspoint.com',    tags: ['mongodb', 'database', 'NoSQL'],    likes: 10 })
+db.mycol.insert({title: 'NoSQL Overview',    description: 'No sql database is very fast',    by_user: 'tutorials point',    url: 'http://www.tutorialspoint.com',    tags: ['mongodb', 'database', 'NoSQL'],    likes: 10 })
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : 1}}}])
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : "$likes"}}}])
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$avg : "$likes"}}}])
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$min : "$likes"}}}])
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$max : "$likes"}}}])
+db.mycol.aggregate([{$group : {_id : "$by_user", url : {$push: "$url"}}}])
+db.mycol.aggregate([{$group : {_id : "$by_user", url : {$addToSet : "$url"}}}])
+db.mycol.aggregate([{$group : {_id : "$by_user", first_url : {$first : "$url"}}}])
+db.mycol.aggregate([{$group : {_id : "$by_user", last_url : {$last : "$url"}}}])
