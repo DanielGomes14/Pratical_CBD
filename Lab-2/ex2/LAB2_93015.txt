@@ -7,3 +7,123 @@ db.rest.find()
 #2
 
 db.rest.find({}, {_id: 0, restaurant_id:1, nome:1, localidade: 1, gastronomia: 1})
+
+#3
+
+db.rest.find({}, {_id: 0, restaurant_id:1, nome:1, localidade: 1, "address.zipcode": 1})
+
+#4
+db.rest.find({"localidade":"Bronx"}).count()
+#5
+db.rest.find({"localidade":"Bronx"}).sort({"nome":1}).limit(15)
+
+#6
+
+db.rest.find({'grades.score' : {$gt: 85}}).pretty()
+
+#7
+
+db.rest.find({ "grades.score":{ $gte:80, $lte:100 } }).pretty()
+
+
+#8
+
+db.rest.find({"address.coord.0" : {$lt: -95.7}}).pretty()
+
+
+#9
+
+db.rest.find({"gastronomia": {$ne: "American"}, 'grades.score': {$gt: 70}, 'address.coord.0': {$lt: -65}}).pretty()
+
+#10
+
+db.rest.find({"nome":{$regex:/^Wil/}},{restaurant_id:1,nome:1,localidade:1,gastronomia:1})
+
+
+#11
+db.rest.find({ localidade: { $eq: 'Bronx' }, $or: [{gastronomia: { $eq: 'American' }},{gastronomia: { $eq: 'Chinese' }}]}, {nome: 1, localidade: 1, gastronomia: 1})
+
+#12
+
+db.rest.find({localidade: {$in : ["Staten Island","Queens","Brooklyn"]}}, {restaurant_id: 1, nome:1,gastronomia:1, localidade: 1})
+
+#13
+
+db.rest.find({"grades.score": {$not: {$gt: 3}}},{nome: 1, gastronomia:1,'grades.score': 1, localidade: 1})
+
+#14
+
+db.rest.find({"grades":{$elemMatch:{score:10, grade:"A", date:ISODate("2014-08-11T00:00:00Z")} }}).pretty()
+
+#15
+db.rest.find({'grades.1.grade': {$eq: 'A'}, 'grades.1.date': {$eq: ISODate("2014-08-11T00:00:00Z")}},{restaurant_id: 1, nome: 1, 'grades.score': 1}).pretty()
+
+#16
+db.rest.find({"address.coord.1":{$gt:42,$lte:52}},{restaurant_id:1,nome:1,address:1})
+
+
+#17
+db.rest.find({},{nome:1,gastronomia:1,localidade:1}).sort({gastronomia:1,localidade:-1})
+
+#18
+
+db.rest.find({localidade: { $eq : "Brooklyn"}, gastronomia:{$ne:"American"}, grades.grade: {$eq: "A"}}, {nome:1,localidade:1,"grades.grade": 1, gastronomia:1})
+
+#19
+#para contar o numero de restaurantes por localidade basta utilizar um agrupamento colocando a $sum a 1 ou seja o valor de soma por cada elemento é 1(penso eu)
+db.rest.aggregate([ {$group : {_id : "$localidade", tot_rests: {$sum:1}  } } ])
+#20
+#perguntar ao professor pq e q db.rest.aggregate([ {$group : {_id : "$nome", tot_rests: {$avg:"$grades.score"}  } }]) da avg null
+#NOTA:usando o $project não podemos colocar mais atributos, contudo penso que usando $add fields tb funcionaria
+
+db.rest.aggregate([ {$project : {average_score : {$avg:"$grades.score"}  } },{$match:{average_score:{$gt:30}}} ])
+
+#21
+
+db.rest.aggregate([{$addFields : {total_score : {$sum : "$grades.score"}}},{$match : {total_score: {$gt: 70}, gastronomia: {$eq:"American"},"address.coord.0": {$lt: -65} }}])
+
+
+#22
+
+db.rest.aggregate([ {$group : {_id : "$gastronomia", tot_rests: {$sum:1}  } }, {$sort:{tot_rests:-1}} ])
+
+#23
+
+db.rest.aggregate([{$group : {_id : {_id:"$address.rua",gastronomia:"$gastronomia"}}}, {$match:{"_id._id":"Flatbush Avenue"}},{$count: "total_rests"}])
+
+#24
+db.rest.aggregate([ {$group: {_id: "$address.rua",numrests:{$sum:1} }}, {$sort:{numrests:-1}} ])
+
+
+#25
+
+#Liste todos os restaurantes por ordem crescente de soma acumulada de scores
+
+db.rest.aggregate([
+        {$project: {_id:  "$nome", total_score: { $sum: "$grades.score" } } },{$sort:{total_score:-1}}
+])
+
+#26
+#Listar todos o nome dos restaurantes que tivemos um score de 10 ou menos, entre 2014-08-01T00:00:00Z e 2014-08-11T00:00:00Z
+
+db.rest.find( {"grades":{$elemMatch:{score:{$not:{$gt:10}}, date:{$gte:ISODate("2014-08-01T00:00:00Z"), $lte: ISODate("2014-08-11T00:00:00Z")   } } } } )
+
+#27
+#Liste a rua com o maior número de restaurantes
+
+db.rest.aggregate([ {$group: {_id: "$address.rua",numrests:{$sum:1} }}, {$sort:{numrests:-1}}, {$limit: 1} ])
+
+#28
+#Listar  o restaurante com media de score mais baixa 
+
+db.rest.aggregate([ {$project : {_id: "$nome" , average_score : {$avg:"$grades.score"}  } },{$sort:{average_score:1}}, {$limit:1} ])
+
+
+#29
+#Listar a rua que obteve maior score acumulado ( de todos os restaurantes nessa rua)
+db.rest.aggregate([ {$group: {_id: "$address.rua",total_street_score:{$sum:{$sum:"$grades.score"} }}}, {$sort:{total_street_score:-1}}, {$limit: 1} ])
+
+#30
+#Listar os 5 restaurantes mais afastados uns dos outros(através de longitude e latitude)
+
+
