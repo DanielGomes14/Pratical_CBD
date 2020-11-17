@@ -127,3 +127,4 @@ db.rest.aggregate([ {$group: {_id: "$address.rua",total_street_score:{$sum:{$sum
 #Listar os 5 restaurantes mais afastados uns dos outros(através de longitude e latitude)
 
 
+db.phones.aggregate([ { $group: {_id:"$components.prefix", numprefixs:{$sum:1}} }  ])

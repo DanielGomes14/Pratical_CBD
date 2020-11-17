@@ -1,0 +1,11 @@
+
+#c
+db.phones.aggregate([ { $group: {_id:"$components.prefix", numprefixs:{$sum:1}} }  ])
+
+
+#d
+
+findCapicua = function(){
+    var fullNumber = db.phones.find({},{"display": 1}).toArray();
+    print(fullNumber)
+}
