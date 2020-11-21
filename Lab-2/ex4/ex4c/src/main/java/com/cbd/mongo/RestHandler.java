@@ -1,24 +1,17 @@
 package com.cbd.mongo;
 
-import com.mongodb.Block;
-import com.mongodb.Cursor;
+
 import com.mongodb.client.model.Projections;
 import org.bson.Document;
-import com.mongodb.BasicDBObject;
-import com.mongodb.Block;
+
 import com.mongodb.client.*;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.fields;
-import static com.mongodb.client.model.Updates.*;
 import static java.util.Arrays.asList;
-import static com.mongodb.client.model.Sorts.*;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Accumulators;
-import org.bson.Document;
-import org.bson.conversions.Bson;
 
-import javax.print.Doc;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -66,7 +59,11 @@ public class RestHandler {
         AggregateIterable<Document> diffcities =this.mcol.aggregate(asList(
                 Aggregates.group(asList("$localidade","$gastronomia"),Accumulators.sum("count",1))
         ));
-        //in order to make a different type of for each(without lambdas)
+        /*
+          in order to make a different type of for each(without lambdas) i decided to use the Consumer class, that is a functional Interface that
+          represents an operation that accepts a single input argument and returns no result.
+          In practice, using a lambda function would have the same effect
+         */
         diffcities.forEach(new Consumer<Document>() {
             @Override
             public void accept(final Document document) {
@@ -81,6 +78,7 @@ public class RestHandler {
     }
     public List<String> getRestWithNameCloserTo(String name){
         List<String> closer_rests = new ArrayList<>();
+        //do a find() operation by regex, in which finds any document where the field "nome" as the substring "name"
         List <Document> f =this.mcol
                 .find(regex("nome",".*"+ name + ".*"))
                 .projection(fields(Projections.include("nome")))
