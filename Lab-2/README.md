@@ -498,3 +498,58 @@ Podemos realizar um agregado com o intuito de saber quantos tutoriais estão esc
 ```
 
 No link a seguir, encontramos uma tabela com mais informações sobre outro tipo de agregações possiveis de realizar: https://www.tutorialspoint.com/mongodb/mongodb_aggregation.htm
+
+## Map Reduces
+
+"**Map-reduce** is a data processing paradigm for condensing large volumes of data into useful aggregated results. MongoDB uses **mapReduce** command for map-reduce operations. MapReduce is generally used for processing large data sets." . Contudo, geralmente deve-se recorrer às pipelines das Agreggations em vez da utilização do MapReduce.
+
+A sintaxe deste commando é a seguinte:
+
+```
+>db.collection.mapReduce(
+   function() {emit(key,value);},  //map function
+   function(key,values) {return reduceFunction}, {   //reduce function
+      out: collection,
+      query: document,
+      sort: document,
+      limit: number
+   }
+)
+```
+
+A partir do "exemplo de sintaxe"  anterior podemos dizer que :
+
+- **map**  é uma funçao javascript que mapeia um valor a uma chave e produz consequentemente um par chave-valor.
+- **reduce** é uma função JS que reduz, ou agrupa, todos os documentos que possuem a mesma chave.
+- **out** especifica a localização do resultado do map-reduce.
+
+- **query**  especifica os critérios de seleção opcionais para escolher documentos.specifies the optional selection criteria for selecting documents
+- **sort** especifica ,também opcionalmente , o critério de ordenaçãospecifies the optional sort criteria
+- **limit** , limita o número de documentos a serem retornados, opcional. 
+
+Com o seguinte documento base..
+
+```
+{
+   "post_text": " An awesome website for tutorials",
+   "user_name": "mark",
+   "status":"active"
+}
+```
+
+Podemos realizar um `mapReduce` que seleciona todos os "posts" ativos, agrupa os pelo username dos utilizadores e conta o numero de posts ativos associados. O `find()` final permite ver o resultado do `mapReduce`.
+
+```
+>db.posts.mapReduce( 
+   function() { emit(this.user_id,1); }, 
+   function(key, values) {return Array.sum(values)}, {  
+      query:{status:"active"},  
+      out:"post_total" 
+   }
+	
+).find()
+
+
+{ "_id" : "tom", "value" : 2 }
+{ "_id" : "mark", "value" : 2 
+```

@@ -124,7 +124,10 @@ db.rest.aggregate([ {$project : {_id: "$nome" , average_score : {$avg:"$grades.s
 db.rest.aggregate([ {$group: {_id: "$address.rua",total_street_score:{$sum:{$sum:"$grades.score"} }}}, {$sort:{total_street_score:-1}}, {$limit: 1} ])
 
 #30
-#Listar os 5 restaurantes mais afastados uns dos outros(através de longitude e latitude)
+#Listar o numero de restaurantes , por localidade e gastronomia. Por fim ordenar primeiro por número de restaurantes e depois por ordem descrente de localidade e gastronomia
+db.rest.aggregate([ { $group: {_id: {"localidade" : "$localidade" , "gastronomia": "$gastronomia"} , count_gast : {$sum : 1 }  } }, {$sort: { "count_gast" : -1 ,  "localidade": -1 , "gastronomia": -1  }}  ])
+
+
 
 
 db.phones.aggregate([ { $group: {_id:"$components.prefix", numprefixs:{$sum:1}} }  ])

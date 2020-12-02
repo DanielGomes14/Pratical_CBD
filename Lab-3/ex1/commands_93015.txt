@@ -1,0 +1,145 @@
+USE cbd
+USE cbd;
+CREATE KEYSPACE cbd WITH replicatin = {'class':'SimpleStrategy', 'replication_factor' : 3};
+CREATE KEYSPACE cbd WITH replication = {'class':'SimpleStrategy', 'replication_factor' : 3};
+DESCRIBE keyspaces;
+ALTER KEYSPACE cbd WITH replication = {'class' : NetworkTopologyStrategy' , 'replication_factor' : 3 };
+ALTER KEYSPACE cbd WITH replication = {'class' : 'NetworkTopologyStrategy' , 'replication_factor' : 3 };
+SELECT * FROM system.schema_keyspaces;
+SELECT * FROM ;
+SELECT * FROM system_schema_keyspaces;
+SELECT * FROM system_schema.keyspaces;
+USE cbd;
+CREATE TABLE emp(
+   emp_id int PRIMARY KEY,
+   emp_name text,
+   emp_city text,
+   emp_sal varint,
+   emp_phone varint
+   );
+CREATE TABLE emp(    emp_id int PRIMARY KEY,    emp_name text,    emp_city text,    emp_sal varint,    emp_phone varint    );
+select * from emp;
+ALTER TABLE emp
+   ... ADD emp_email text
+:
+ALTER TABLE emp
+ADD emp_email text
+;
+ALTER TABLE emp ADD emp_email text ;
+select * from emp;
+ALTER TABLE emp DROP emp_email;
+select * from emp;
+DROP TABLE emp;
+DESCRIBE COLUMNFAMILIES;
+CREATE TABLE emp(    emp_id int PRIMARY KEY,    emp_name text,    emp_city text,    emp_sal varint,    emp_phone varint    );
+TRUNCATE emp;
+select * from emp;
+CREATE INDEX name ON emp1 (emp_name);
+CREATE INDEX name ON emp (emp_name);
+drop index name;
+BEGIN BATCH
+... INSERT INTO emp (emp_id, emp_city, emp_name, emp_phone, emp_sal) values(  4,'Pune','rajeev',9848022331, 30000);
+... UPDATE emp SET emp_sal = 50000 WHERE emp_id =3;
+... DELETE emp_city FROM emp WHERE emp_id = 2;
+... APPLY BATCH;
+BEGIN BATCH ... INSERT INTO emp (emp_id, emp_city, emp_name, emp_phone, emp_sal) values(  4,'Pune','rajeev',9848022331, 30000); ... UPDATE emp SET emp_sal = 50000 WHERE emp_id =3; ... DELETE emp_city FROM emp WHERE emp_id = 2; ... APPLY BATCH;
+BEGIN BATCH ... INSERT INTO emp (emp_id, emp_city, emp_name, emp_phone, emp_sal) values(  4,'Pune','rajeev',9848022331, 30000); UPDATE emp SET emp_sal = 50000 WHERE emp_id =3; DELETE emp_city FROM emp WHERE emp_id = 2; APPLY BATCH;
+BEGIN BATCH  INSERT INTO emp (emp_id, emp_city, emp_name, emp_phone, emp_sal) values(  4,'Pune','rajeev',9848022331, 30000); UPDATE emp SET emp_sal = 50000 WHERE emp_id =3; DELETE emp_city FROM emp WHERE emp_id = 2; APPLY BATCH;
+select * from emp
+;
+select * from emp ;
+INSERT INTO emp (emp_id, emp_name, emp_city,
+ emp_phone, emp_sal) VALUES(1,'ram', 'Hyderabad', 9848022338, 50000);
+INSERT INTO emp (emp_id, emp_name, emp_city,  emp_phone, emp_sal) VALUES(1,'ram', 'Hyderabad', 9848022338, 50000);
+INSERT INTO emp (emp_id, emp_name, emp_city,
+   emp_phone, emp_sal) VALUES(2,'robin', 'Hyderabad', 9848022339, 40000);
+INSERT INTO emp (emp_id, emp_name, emp_city,    emp_phone, emp_sal) VALUES(2,'robin', 'Hyderabad', 9848022339, 40000);
+ INSERT INTO emp (emp_id, emp_name, emp_city,
+   emp_phone, emp_sal) VALUES(3,'rahman', 'Chennai', 9848022330, 45000);
+ INSERT INTO emp (emp_id, emp_name, emp_city,    emp_phone, emp_sal) VALUES(3,'rahman', 'Chennai', 9848022330, 45000);
+select * from emp ;
+UPDATE emp SET emp_city='Delhi',emp_sal=50000
+   WHERE emp_id=2;
+UPDATE emp SET emp_city='Delhi',emp_sal=50000    WHERE emp_id=2;
+select * from emp ;
+SELECT emp_name, emp_sal from emp;
+CREATE INDEX ON emp(emp_sal);
+SELECT * FROM emp WHERE emp_sal=50000;
+DELETE emp_sal FROM emp WHERE emp_id=3;
+Verification
+SELECT * FROM emp WHERE emp_sal=50000;
+ INSERT INTO emp (emp_id, emp_name, emp_city,    emp_phone, emp_sal) VALUES(3,'rahman', 'Chennai', 9848022330, 45000);
+DELETE emp_sal FROM emp WHERE emp_id=3;
+SELECT * FROM emp WHERE emp_sal=50000;
+ INSERT INTO emp (emp_id, emp_name, emp_city,    emp_phone, emp_sal) VALUES(3,'rahman', 'Chennai', 9848022330, 45000);
+SELECT * FROM emp;
+DELETE emp_sal FROM emp WHERE emp_id=3;
+SELECT * FROM emp;
+DELETE FROM emp WHERE emp_id=3;
+SELECT * FROM emp;
+UPDATE emp SET emp_id=3  WHERE emp_=4;
+CREATE TABLE data(name text PRIMARY KEY, email list<text>);
+INSERT INTO data(name, email) VALUES ('ramu',
+['abc@gmail.com','cba@yahoo.com'])
+;
+INSERT INTO data(name, email) VALUES ('ramu', ['abc@gmail.com','cba@yahoo.com']) ;
+INSERT INTO data(name, email) VALUES ('ramu',
+UPDATE data
+... SET email = email +['xyz@tutorialspoint.com']
+... where name = 'ramu';
+UPDATE data ... SET email = email +['xyz@tutorialspoint.com'] ... where name = 'ramu';
+UPDATE data SET email = email +['xyz@ua.pt'] ... where name = 'ramu';
+UPDATE data SET email = email +['xyz@ua.pt']  where name = 'ramu';
+select *  from data;
+CREATE TABLE data2 (name text PRIMARY KEY, phone set<varint>);
+INSERT INTO data2(name, phone)VALUES ('rahman',    {9848022338,9848022339});
+UPDATE data3
+   ... SET address = address+{'office':'mumbai'}
+ WHERE name = 'robin';
+UPDATE data3    ... SET address = address+{'office':'mumbai'}  WHERE name = 'robin';
+UPDATE data3 SET address = address+{'office':'mumbai'}  WHERE name = 'robin';
+select *  from data2;
+UPDATE data2
+   ... SET phone = phone + {9848022330}
+ where name = 'rahman';
+UPDATE data2    ... SET phone = phone + {9848022330}  where name = 'rahman';
+UPDATE data2  SET phone = phone + {9848022330}  where name = 'rahman';
+select *  from data2;
+ CREATE TABLE data3 (name text PRIMARY KEY, address
+map<timestamp, text>);
+ CREATE TABLE data3 (name text PRIMARY KEY, address map<timestamp, text>);
+INSERT INTO data3 (name, address)
+VALUES ('robin', {'home' : 'hyderabad' , 'office' : 'Delhi' } );
+INSERT INTO data3 (name, address) VALUES ('robin', {'home' : 'hyderabad' , 'office' : 'Delhi' } );
+INSERT INTO data3 (name, address)
+   VALUES ('robin', {'home' : 'hyderabad' , 'office' : 'Delhi' } );
+INSERT INTO data3 (name, address)    VALUES ('robin', {'home' : 'hyderabad' , 'office' : 'Delhi' } );
+DROP data3;
+ CREATE TABLE data3 (name text PRIMARY KEY, address map<text, text>);
+DROP TABLE data3;
+ CREATE TABLE data3 (name text PRIMARY KEY, address map<text, text>);
+INSERT INTO data3 (name, address)    VALUES ('robin', {'home' : 'hyderabad' , 'office' : 'Delhi' } );
+SELECT * FROM data3;
+ UPDATE data3
+   ... SET address = address+{'office':'mumbai'}
+ WHERE name = 'robin';
+ UPDATE data3    ... SET address = address+{'office':'mumbai'}  WHERE name = 'robin';
+ UPDATE data3   SET address = address+{'office':'mumbai'}  WHERE name = 'robin';
+SELECT * FROM data3;
+CREATE TYPE card_details( num int , pin int, name text ,cvv int, phone set<int> );
+DESCRIBE card_details;
+DESCRIBE TYPE card_details;
+ALTER TYPE card_details ADD email text;
+ ALTER TYPE card_details RENAME email TO mail;
+DESCRIBE TYPE card_details;
+DESCRIBE TYPES;
+drop type card;
+drop type card_details ;;
+drop type card_details ;
+DESCRIBE TYPES;
+cd /var/log/cassandra
+CAPTURE '/home/';
+CAPTURE '/home/danielgomes/Desktop/'
+CAPTURE '/home/danielgomes/Desktop/';
+CAPTURE '/home/danielgomes/CassandraProgs/nada.txt';
+CAPTURE '/home/danielgomes/CassandraProgs/';
