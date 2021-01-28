@@ -1,0 +1,92 @@
+#1
+match (person:Person)-[r:ACTED_IN]->(movie:Movie),(person)-[:DIRECTED]->(movie) return person.name,movie.title
+#2
+match (person:Person)-[r:ACTED_IN]->(movie:Movie) WHERE movie.released > 2005 return person.name
+#3
+match (m)-[]->(n) with m as rel1, count([]) as counting,n as rel2
+where counting>1
+return rel1,counting,rel2;
+
+#4
+match (person1:Person)-[:REVIEWED]->(mov) <-[:REVIEWED] - (person2:Person) Where ID(person1)<ID(person2)
+RETURN person1.name , mov.title, person2.name
+
+#5
+match (person1:Person)-[:ACTED_IN]->(mov) <-[:ACTED_IN]- (person2:Person) Where ID(person1)<ID(person2)
+RETURN person1.name , mov.title, person2.name
+
+#6
+match(actor1:Person)-[:ACTED_IN]->(movie:Movie{title:'Apollo 13'})
+return avg(movie.released-actor1.born)
+
+#7
+match(actor1:Person)-[:ACTED_IN]->(movie:Movie)
+WITH actor1,movie, movie.released-actor1.born as age
+RETURN movie.title,round(avg(age)*100)/100 as avg_age
+ORDER BY avg_age DESC
+LIMIT 10
+
+#8
+match(actor1:Person)-[:ACTED_IN]->(movie:Movie)
+WITH actor1,movie,movie.released-actor1.born as diff_age
+WITH movie,round(avg(diff_age)*100)/100 as avg_age
+Return (movie)-[]-(:Person)
+order by avg_age
+LIMIT 1;
+
+#9
+MATCH (john:Person { name: 'John Cusack' }),
+(demi:Person { name: 'Demi Moore' }), p = shortestPath((john)-[*]-(demi))
+RETURN p
+
+#10
+MATCH (keanu:Person { name: 'Keanu Reeves' }),
+(cruise:Person { name: 'Tom Cruise' }), p = shortestPath((keanu)-[*]-(cruise))
+RETURN length(p)
+
+#11
+MATCH (jim:Person),
+(tom:Person), p = shortestPath((jim)-[*]-(tom))
+WHERE jim.name STARTS WITH 'Jim' 
+AND tom.name STARTS WITH 'Tom'
+RETURN length(p)
+
+#12
+MATCH (p:Person),
+(jim:Person{name:'Jim Cash'}), path = shortestPath((p)-[*..2]-(jim))
+WHERE p.name<>jim.name
+RETURN p.name as actor_name,length(path)
+
+#13
+MATCH (p:Person),
+(kevin:Person{name:'Kevin Bacon'}), path = shortestPath((p)-[*]-(kevin))
+WHERE p.name<>kevin.name
+RETURN length(path) as size_path
+ORDER BY size_path DESC
+LIMIT 1
+
+#14
+MATCH (first_node:Person),
+(last_node:Person), path = shortestPath((first_node)-[*]-(last_node))
+WHERE first_node <> last_node
+RETURN length(path) as size_path
+ORDER BY size_path DESC
+LIMIT 1
+
+#15
+MATCH (first_node:Person),
+(last_node:Person), path = shortestPath((first_node)-[*]-(last_node))
+WHERE first_node <> last_node
+WITH path,length(path) as size_path
+RETURN size_path, count(size_path) as counting
+order by size_path
+
+#16
+MATCH (first_node:Person),
+(last_node:Person), path = shortestPath((first_node)-[:ACTED_IN*]-(last_node))
+WHERE first_node <> last_node
+WITH first_node,AVG(length(path)) as avg_path
+RETURN first_node.name, round(avg_path*100)/100 as avg_path
+ORDER BY avg_path
+LIMIT 10
+

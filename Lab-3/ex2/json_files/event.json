@@ -1,0 +1,10 @@
+{"video_id": 1, "author": "AceDestiny", "moment": 0, "event_timestamp": "2020-12-02 11:28:48.313Z", "type": "PLAY"}
+{"video_id": 1, "author": "AceDestiny", "moment": 100, "event_timestamp": "2020-12-02 11:28:52.006Z", "type": "STOP"}
+{"video_id": 1, "author": "AceDestiny", "moment": 100, "event_timestamp": "2020-12-02 11:28:55.296Z", "type": "PLAY"}
+{"video_id": 1, "author": "AceDestiny", "moment": 300, "event_timestamp": "2020-12-02 11:28:58.784Z", "type": "STOP"}
+{"video_id": 1, "author": "Mzuckerberg", "moment": 0, "event_timestamp": "2020-12-02 11:33:00.591Z", "type": "PLAY"}
+{"video_id": 1, "author": "Mzuckerberg", "moment": 56, "event_timestamp": "2020-12-02 11:33:03.928Z", "type": "PAUSE"}
+{"video_id": 1, "author": "Mzuckerberg", "moment": 56, "event_timestamp": "2020-12-02 11:33:09.872Z", "type": "PLAY"}
+{"video_id": 1, "author": "Mzuckerberg", "moment": 296, "event_timestamp": "2020-12-02 11:33:13.724Z", "type": "PAUSE"}
+{"video_id": 1, "author": "naosei1", "moment": 0, "event_timestamp": "2020-12-02 11:33:17.108Z", "type": "PLAY"}
+{"video_id": 1, "author": "naosei2", "moment": 0, "event_timestamp": "2020-12-02 11:33:20.681Z", "type": "PLAY"}
